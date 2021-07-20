@@ -10,13 +10,13 @@ const isNotLoggedIn = require('./../middleware/isNotLoggedIn')
 
 router.post('/signup', (req, res)=>{
 	const {username, email, password} = req.body
-
 	if(!username || !password || !email) res.status(400).json({message: 'You provided incorrect signup values'})
+	console.log(req.body)
 
 	User.findOne({username})
 	.then(user=> {
 		if(user) {
-			res.status(400).json({message: 'The username already exists'})
+			res.status(402).json({message: 'The username already exists'})
 		} else {
 			//Hash the password
 			const salt = bcrypt.genSaltSync(saltRounds);
@@ -42,7 +42,7 @@ router.post('/login', (req, res)=>{
 
 			if(passwordCorrect){
 				req.session.currentUser = user
-				res.json({message: 'User correctly logged in'}) // Express will close the response automatically with a 200 status code
+				res.json(user) // Express will close the response automatically with a 200 status code
 			} else {
 				res.status(400).res.json({message: 'The credentials are invalid'})
 			}
