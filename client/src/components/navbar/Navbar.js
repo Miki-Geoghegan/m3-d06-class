@@ -19,9 +19,9 @@ function Navbar(props) {
         <li>
           <Link to="/login">Login</Link>
         </li>
-        {
-          props.loggedInUser && <li>Hello, {props.loggedInUser.username}</li>
-        }
+        <li>
+          <Link to="/projects/protected">Protected page</Link>
+        </li>
       </ul>
     </nav>
   )

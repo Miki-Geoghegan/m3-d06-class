@@ -22,16 +22,17 @@ function App() {
       <BrowserRouter>
         <Navbar loggedInUser={loggedInUser}/>
         <Switch>
+          <ProtectedRoute
+             user={loggedInUser}
+             path={'/projects/protected'}
+             component={UserProfile}
+          />
           <Route exact path="/projects" component={ProjectList}/>
           <Route exact path="/projects/:projectId" component={ProjectDetails} />
 {/* here is where we define the name of the variable that will be stored in the router in server */ }
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" render={ props => <Login {...props} setLoggedInUser={setLoggedInUser}/>} />
-          <ProtectedRoute
-             user={loggedInUser}
-             path={'/projects/protected'}
-             component={DisplayUserName}
-             />
+
         </Switch>
       </BrowserRouter>
     </div>
