@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
-import * as auth from './auth/auth-service'
+import * as auth from './auth-service'
 
 function Login(props){
 
