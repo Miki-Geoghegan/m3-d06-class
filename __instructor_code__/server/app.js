@@ -31,8 +31,12 @@ const isLoggedIn = require('./middleware/isLoggedIn');
 const authRoutes = require('./routes/auth-routes');
 app.use('/auth', authRoutes);
 
-const privateRoutes = require('./routes/private-routes');
-app.use('/private', isLoggedIn, privateRoutes);
+const projectRouter = require('./routes/project.routes')
+app.use('/api/projects', projectRouter)
+
+
+const taskRouter = require('./routes/task.routes')
+app.use('/api/tasks', taskRouter)
 
 const index = require('./routes/index');
 app.use('/', index);
