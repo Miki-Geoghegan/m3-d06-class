@@ -7,12 +7,13 @@ const saltRounds = process.env.SALT || 10;
 
 const User = require('../models/User.model');
 
+const isLoggedIn = require('./../middleware/isLoggedIn')
 const isNotLoggedIn = require('./../middleware/isNotLoggedIn')
 
 //2 - Create 5 routes: 2 for login, 2 for signup and 1 for logout
 /* ***** sign up user ***** */
 
-router.post('/signup', (req, res)=> {
+router.post('/signup', isNotLoggedIn, (req, res)=> {
 	const {username, password, email} = req.body
 
 	if (username === "" || password === "" || email === "" || password.length < 4) {
@@ -28,14 +29,14 @@ router.post('/signup', (req, res)=> {
 	const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(password, salt);
 
-	User.create({username, email, password: hash})
+	User.create({username, email, password: hashedPassword})
 	.then((newUser)=> res.json(newUser))
 	.catch(err => res.json(err))
 	// when you are in a catch, it knows there is an error, so it will add the .status(400) itself
 }}
 )})
 
-router.post('/login', (req, res) => {
+router.post('/login', isNotLoggedIn, (req, res) => {
 	const {username, password} = req.body
 	
 	User.findOne({username})
@@ -49,9 +50,9 @@ router.post('/login', (req, res) => {
 
 			if(passwordCorrect) {
 				req.session.currentUser = user
-				res.json({message: `User ${user} logged in`}) // express will automatically close the response with a 200 positive status code
+				res.json({message: `User logged in`}) // express will automatically close the response with a 200 positive status code
 			} else {
-				res.status(400).json({message: `${username} or ${password} incorrect`})
+				res.status(400).json({message: 'username or password incorrect'})
 			}
 		}
 	})
@@ -59,7 +60,7 @@ router.post('/login', (req, res) => {
 })
 
 
-router.get('/logout', (req, res) => {
+router.get('/logout', isLoggedIn, (req, res) => {
 	req.session.destroy((err) => {
 		if (err) {
 			res.status(400).json({ message: 'Something went wrong! Yikes!' });
