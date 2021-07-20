@@ -13,7 +13,7 @@ const isNotLoggedIn = require('./../middleware/isNotLoggedIn')
 //2 - Create 5 routes: 2 for login, 2 for signup and 1 for logout
 /* ***** sign up user ***** */
 
-router.post('/signup', isNotLoggedIn, (req, res)=> {
+router.post('/signup', (req, res)=> {
 	const {username, password, email} = req.body
 
 	if (username === "" || password === "" || email === "" || password.length < 4) {
@@ -36,7 +36,7 @@ router.post('/signup', isNotLoggedIn, (req, res)=> {
 }}
 )})
 
-router.post('/login', isNotLoggedIn, (req, res) => {
+router.post('/login', (req, res) => {
 	const {username, password} = req.body
 	
 	User.findOne({username})
@@ -50,7 +50,8 @@ router.post('/login', isNotLoggedIn, (req, res) => {
 
 			if(passwordCorrect) {
 				req.session.currentUser = user
-				res.json({message: `User logged in`}) // express will automatically close the response with a 200 positive status code
+				console.log(user)
+				res.json(user) // express will automatically close the response with a 200 positive status code
 			} else {
 				res.status(400).json({message: 'username or password incorrect'})
 			}
@@ -60,7 +61,7 @@ router.post('/login', isNotLoggedIn, (req, res) => {
 })
 
 
-router.get('/logout', isLoggedIn, (req, res) => {
+router.get('/logout', (req, res) => {
 	req.session.destroy((err) => {
 		if (err) {
 			res.status(400).json({ message: 'Something went wrong! Yikes!' });

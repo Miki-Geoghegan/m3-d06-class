@@ -20,6 +20,7 @@ function Login(props){
         return auth.login(username, password)
         .then(loggedInUser => {
             setFormState(initialFormState);
+            console.log(loggedInUser)
             props.setLoggedInUser(loggedInUser)
             /* once login has been sucessful, we get the logged in user - we need to share this state so other components know when they can share access - the only way to share state between more than one component is to lift up state and pass to the children the set state function through the props. Here we are looking at logged in user so we setLoggedInUser - this is a typical pattern or passing down the callback to the children to set the state - here we are passing it to LoggedInUser */
         })

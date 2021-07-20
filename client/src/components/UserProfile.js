@@ -1,7 +1,9 @@
 import React from 'react'
 
 function UserProfile(props){
-    return(<h1>Hello {props.loggedInUser.username}</h1>)
+    const {loggedInUser} = props
+    console.log(props)
+    return(<h1>Hello there {loggedInUser.username}</h1>)
 
 }
 
