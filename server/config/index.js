@@ -17,12 +17,25 @@ const favicon = require("serve-favicon");
 // https://www.npmjs.com/package/path
 const path = require("path");
 
+// CORS require
+const cors = require('cors')
+
 //
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
 // Middleware configuration
 module.exports = (app) => {
+
+  // put CORS first, so this is the first thing server takes care of
+  app.use(
+    cors({
+      credentials: true, // cors will take care of reading credentials
+      origin: ['http://localhost:3000'] // <== this will be the URL of our React app (it will be running on port 3000) /* // this is where the server is accepting requests from - as we are sending from front-end, it is 3000, in real cases, this would be an address on the cloud */
+    })
+  );
+
+
   // In development environment the app logs
   app.use(logger("dev"));
 
